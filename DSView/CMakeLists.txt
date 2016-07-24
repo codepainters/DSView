@@ -324,6 +324,7 @@ else()
 	list(APPEND DSVIEW_LINK_LIBS ${PKGDEPS_LIBRARIES})
 endif()
 
+list(APPEND DSVIEW_LINK_LIBS -lzip)
 
 add_executable(${PROJECT_NAME}
 	${DSView_SOURCES}
