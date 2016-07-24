@@ -282,7 +282,7 @@ void SigSession::export_file(const QString name, QWidget* parent, const QString 
     g_hash_table_insert(params, (char*)"type", typeGVariant);
     BOOST_FOREACH(const boost::shared_ptr<view::Signal> s, _signals) {
         boost::shared_ptr<view::DsoSignal> dsoSig;
-        if (dsoSig = dynamic_pointer_cast<view::DsoSignal>(s)) {
+        if ((dsoSig = dynamic_pointer_cast<view::DsoSignal>(s)) != NULL) {
             GVariant* timebaseGVariant = g_variant_new_uint64(dsoSig->get_hDialValue());
             g_hash_table_insert(params, (char*)"timebase", timebaseGVariant);
             break;
@@ -489,7 +489,7 @@ vector< boost::shared_ptr<view::GroupSignal> > SigSession::get_group_signals()
 
 set< boost::shared_ptr<data::SignalData> > SigSession::get_data() const
 {
-    lock_guard<mutex> lock(_signals_mutex);
+    boost::lock_guard<boost::mutex> lock(_signals_mutex);
     set< boost::shared_ptr<data::SignalData> > data;
     BOOST_FOREACH(const boost::shared_ptr<view::Signal> sig, _signals) {
         assert(sig);
@@ -813,7 +813,7 @@ void SigSession::reload()
                     while (i != _signals.end()) {
                         if ((*i)->get_index() == probe->index) {
                             boost::shared_ptr<view::LogicSignal> logicSig;
-                            if (logicSig = dynamic_pointer_cast<view::LogicSignal>(*i))
+                            if ((logicSig = dynamic_pointer_cast<view::LogicSignal>(*i)) != NULL)
                                 signal = boost::shared_ptr<view::Signal>(
                                     new view::LogicSignal(logicSig, _logic_data, probe));
                             break;
@@ -980,7 +980,7 @@ void SigSession::feed_in_dso(const sr_datafeed_dso &dso)
         {
             assert(s);
             boost::shared_ptr<view::DsoSignal> dsoSig;
-            if (dsoSig = dynamic_pointer_cast<view::DsoSignal>(s))
+            if ((dsoSig = dynamic_pointer_cast<view::DsoSignal>(s)) != NULL)
                 dsoSig->set_scale(dsoSig->get_view_rect().height() / 256.0f);
         }
 
@@ -1308,7 +1308,7 @@ bool SigSession::add_decoder(srd_decoder *const dec)
 
 vector< boost::shared_ptr<view::DecodeTrace> > SigSession::get_decode_signals() const
 {
-    lock_guard<mutex> lock(_signals_mutex);
+    boost::lock_guard<boost::mutex> lock(_signals_mutex);
     return _decode_traces;
 }
 
