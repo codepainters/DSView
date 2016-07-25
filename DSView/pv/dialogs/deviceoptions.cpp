@@ -152,7 +152,7 @@ void DeviceOptions::setup_probes()
     _probes_checkBox_list.clear();
 
     if (_dev_inst->dev_inst()->mode == LOGIC) {
-        GVariant *gvar_opts;
+        GVariant *gvar_opts = NULL;
         gsize num_opts;
         if (sr_config_list(_dev_inst->dev_inst()->driver, _dev_inst->dev_inst(), NULL, SR_CONF_CHANNEL_MODE,
             &gvar_opts) == SR_OK) {
