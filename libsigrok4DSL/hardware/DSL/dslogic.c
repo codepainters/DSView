@@ -243,9 +243,9 @@ static struct sr_dev_driver *di = &DSLogic_driver_info;
 
 extern struct ds_trigger *trigger;
 
-struct sr_status mstatus;
-struct cmd_zero_info zero_info;
-struct cmd_comb_info comb_info;
+static struct sr_status mstatus;
+static struct cmd_zero_info zero_info;
+static struct cmd_comb_info comb_info;
 
 /**
  * Check the USB configuration to determine if this is an DSLogic device.
